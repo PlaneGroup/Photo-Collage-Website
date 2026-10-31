@@ -1,0 +1,49 @@
+{
+  "upload": "업로드",
+  "cancel": "취소",
+  "confirm": "확인",
+  "close": "닫기",
+  "delete": "삭제",
+  "edit": "편집",
+  "save": "저장",
+  "reset": "초기화",
+  "filter": "필터",
+  "filters": {
+    "normal": "원본 (기본)",
+    "mono": "흑백 모노",
+    "noir": "필름 누아르",
+    "warm": "따스한 햇살",
+    "cool": "시원한 쿨톤",
+    "vintage": "90s 빈티지 필름",
+    "vivid": "생생한 비비드",
+    "fade": "감성 페이드",
+    "retro-polaroid": "레트로 폴라로이드"
+  },
+  "aspectRatios": {
+    "1:1": "정사각형 (1:1)",
+    "4:5": "인스타그램 피드 (4:5)",
+    "9:16": "스토리/릴스/쇼츠 (9:16)",
+    "16:9": "와이드 시네마 (16:9)",
+    "3:4": "포토부스 규격 (3:4)",
+    "4:3": "클래식 사진 (4:3)"
+  },
+  "backgrounds": {
+    "white": "퓨어 화이트",
+    "black": "옵시디언 블랙",
+    "cream": "스튜디오 웜 크림",
+    "pink": "파스텔 블라썸",
+    "lavender": "감성 라벤더",
+    "mint": "상쾌한 민트",
+    "gradientSunset": "노을 선셋",
+    "gradientPurple": "네온 벨벳",
+    "gradientOcean": "딥 오션",
+    "gradientPeach": "피치 셔벗",
+    "transparent": "투명 배경"
+  },
+  "fontStyles": {
+    "modern": "모던 산세리프 (고딕)",
+    "serif": "감성 세리프 (명조)",
+    "typewriter": "빈티지 타자기",
+    "handwriting": "자연스러운 손글씨"
+  }
+}

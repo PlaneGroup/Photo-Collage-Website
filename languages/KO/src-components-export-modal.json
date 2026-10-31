@@ -1,0 +1,15 @@
+{
+  "exportTitle": "콜라주 이미지 내보내기",
+  "exportSubtitle": "내 기기에서 직접 초고화질 무손실 렌더링됩니다",
+  "formatLabel": "이미지 포맷",
+  "scaleLabel": "해상도 및 화질 배율",
+  "scaleStandard": "표준 화질 (1x - 빠른 웹 공유)",
+  "scaleRetina": "초고화질 Ultra HD (2x - 인쇄 및 소장용)",
+  "downloadButton": "기기에 다운로드",
+  "copyButton": "클립보드로 복사",
+  "downloadSuccess": "콜라주 이미지가 성공적으로 다운로드되었습니다!",
+  "copySuccess": "클립보드에 복사되었습니다! 원하는 곳에 붙여넣기(Ctrl+V) 하세요.",
+  "copyFailed": "브라우저에서 클립보드 복사를 지원하지 않습니다. 다운로드 버튼을 이용해 주세요.",
+  "privacyFootnote": "브라우저 메모리에서 100% 렌더링되며 서버에 어떠한 데이터도 남지 않습니다.",
+  "preparing": "초고해상도 렌더링 중..."
+}

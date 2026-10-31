@@ -1,0 +1,12 @@
+{
+  "brandName": "CollageCraft",
+  "brandTagline": "Modern & Private Photo Collage Studio",
+  "privacyBadge": "100% Client-Side Privacy",
+  "privacyTooltip": "Photos are processed entirely in your browser memory. Never uploaded or saved to any server.",
+  "themeToggleLight": "Switch to Light Mode",
+  "themeToggleDark": "Switch to Dark Mode",
+  "languageLabel": "Language",
+  "exportButton": "Export Collage",
+  "newCollageButton": "New Collage",
+  "resetConfirm": "Are you sure you want to start over? All uploaded photos in memory will be cleared."
+}

@@ -1,0 +1,21 @@
+{
+  "layoutsTitle": "콜라주 템플릿",
+  "categoryAll": "전체",
+  "categoryGrid": "클래식 그리드",
+  "categoryTrendy": "트렌디 & 매거진",
+  "categoryPhotobooth": "인생네컷 & 포토부스",
+  "layoutAuto": "스마트 자동 레이아웃",
+  "layoutGrid2x1": "가로 2분할 (2x1)",
+  "layoutGrid1x2": "세로 2분할 (1x2)",
+  "layoutGrid2x2": "정사각형 4분할 (2x2)",
+  "layoutGrid3x2": "와이드 6분할 (3x2)",
+  "layoutGrid2x3": "세로 6분할 (2x3)",
+  "layoutGrid3x3": "모자이크 9분할 (3x3)",
+  "layoutLife4cutsStrip": "인생네컷 4컷 세로 스트립",
+  "layoutLife4cuts2x2": "인생네컷 4컷 2x2 프레임",
+  "layoutEditorialHero": "매거진 피처드 히어로",
+  "layoutEditorialSidebar": "매거진 사이드바형",
+  "layoutPolaroidTrio": "폴라로이드 감성",
+  "layoutAsymmetricSplit": "황금비율 비대칭 분할",
+  "layoutFilmstrip": "시네마틱 필름스트립"
+}

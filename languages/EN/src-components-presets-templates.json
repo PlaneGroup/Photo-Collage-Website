@@ -1,0 +1,21 @@
+{
+  "layoutsTitle": "Collage Templates",
+  "categoryAll": "All",
+  "categoryGrid": "Classic Grids",
+  "categoryTrendy": "Aesthetic & Magazine",
+  "categoryPhotobooth": "Photobooth Strips",
+  "layoutAuto": "Smart Auto Layout",
+  "layoutGrid2x1": "Split Horizontal (2x1)",
+  "layoutGrid1x2": "Split Vertical (1x2)",
+  "layoutGrid2x2": "Square Grid (2x2)",
+  "layoutGrid3x2": "Grid 6-Pack (3x2)",
+  "layoutGrid2x3": "Grid 6-Tall (2x3)",
+  "layoutGrid3x3": "Mosaic Grid (3x3)",
+  "layoutLife4cutsStrip": "Life4Cuts 4-Strip",
+  "layoutLife4cuts2x2": "Photobooth 4-Grid",
+  "layoutEditorialHero": "Editorial Featured Hero",
+  "layoutEditorialSidebar": "Magazine Left Hero",
+  "layoutPolaroidTrio": "Polaroid Aesthetic",
+  "layoutAsymmetricSplit": "Golden Ratio Split",
+  "layoutFilmstrip": "Cinematic Filmstrip"
+}

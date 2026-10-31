@@ -1,0 +1,15 @@
+{
+  "exportTitle": "Export Your Collage",
+  "exportSubtitle": "Rendered directly on your device in crystal clear quality",
+  "formatLabel": "Image Format",
+  "scaleLabel": "Resolution & Scale",
+  "scaleStandard": "Standard (1x - Fast Web)",
+  "scaleRetina": "Ultra HD (2x - Crisp Print)",
+  "downloadButton": "Download to Device",
+  "copyButton": "Copy to Clipboard",
+  "downloadSuccess": "Collage downloaded successfully!",
+  "copySuccess": "Copied to clipboard!",
+  "copyFailed": "Clipboard copy not supported by your browser, please use Download button.",
+  "privacyFootnote": "Rendered 100% in browser memory. No data sent to any server.",
+  "preparing": "Rendering high-res collage..."
+}

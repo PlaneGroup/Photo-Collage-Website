@@ -1,0 +1,49 @@
+{
+  "upload": "Upload",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "close": "Close",
+  "delete": "Delete",
+  "edit": "Edit",
+  "save": "Save",
+  "reset": "Reset",
+  "filter": "Filter",
+  "filters": {
+    "normal": "Original",
+    "mono": "Black & White",
+    "noir": "Film Noir",
+    "warm": "Warm Glow",
+    "cool": "Cool Breeze",
+    "vintage": "Vintage Film",
+    "vivid": "Vivid Pop",
+    "fade": "Moody Fade",
+    "retro-polaroid": "Retro Polaroid"
+  },
+  "aspectRatios": {
+    "1:1": "Square (1:1)",
+    "4:5": "Portrait (4:5)",
+    "9:16": "Story (9:16)",
+    "16:9": "Cinema (16:9)",
+    "3:4": "Photobooth (3:4)",
+    "4:3": "Classic (4:3)"
+  },
+  "backgrounds": {
+    "white": "Pure White",
+    "black": "Obsidian Black",
+    "cream": "Warm Studio Cream",
+    "pink": "Pastel Blossom",
+    "lavender": "Aesthetic Lilac",
+    "mint": "Fresh Mint",
+    "gradientSunset": "Sunset Boulevard",
+    "gradientPurple": "Neon Velvet",
+    "gradientOcean": "Deep Ocean",
+    "gradientPeach": "Peach Sherbet",
+    "transparent": "Transparent Grid"
+  },
+  "fontStyles": {
+    "modern": "Clean Modern Sans",
+    "serif": "Classic Editorial Serif",
+    "typewriter": "Vintage Typewriter",
+    "handwriting": "Casual Handwriting"
+  }
+}

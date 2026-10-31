@@ -1,0 +1,12 @@
+{
+  "brandName": "CollageCraft",
+  "brandTagline": "세련되고 안전한 프라이빗 사진 콜라주 스튜디오",
+  "privacyBadge": "100% 클라이언트 보안",
+  "privacyTooltip": "사진은 브라우저 메모리에서만 안전하게 처리되며 서버나 웹 폴더에 절대 전송/저장되지 않습니다.",
+  "themeToggleLight": "라이트 모드로 전환",
+  "themeToggleDark": "다크 모드로 전환",
+  "languageLabel": "언어 선택",
+  "exportButton": "콜라주 내보내기",
+  "newCollageButton": "새로 만들기",
+  "resetConfirm": "새로 시작하시겠습니까? 메모리에 있는 모든 사진이 초기화됩니다."
+}
