@@ -50,6 +50,35 @@
 - [x] Created stylish floating drop overlay (`editor.dragToAddTitle`, `editor.dragToAddSubtitle`) with bilingual i18n support.
 - [x] Auto-layout seamlessly accommodates newly appended photos while preserving 100% in-memory client-side privacy.
 - [x] Handled drop on individual photo slots to differentiate internal swapping vs external file addition.
+- [x] Fixed drag-to-add modal overlay lingering issue:
+  - Removed event propagation block (`e.stopPropagation()`) in canvas slots.
+  - Added dedicated `onDrop` and `onDragLeave` handlers directly on the overlay with `pointer-events-auto`.
+  - Added window-level listeners (`drop`, `dragend`, `mouseleave`) and click-to-dismiss fail-safe ensuring the modal always disappears immediately upon file release or cancel.
+- [x] Fixed duplicate photo upload bug:
+  - Eliminated duplicate `addPhotos` invocations caused by drop events bubbling through nested parent containers (`overlay` -> `root` and `slot` -> `canvas` -> `root`).
+  - Restricted `CollageCanvas` drop handlers strictly to internal photo swapping; external file drops are handled solely by `App.tsx`.
+  - Added `e.stopPropagation()` on overlay drop and initial dropzone drop.
+  - Added a fingerprint & timestamp debounce barrier in `CollageContext.tsx` preventing identical file batches from being processed more than once within 600ms.
+
+### Sprint 7: Interactive Framing & Position Adjustment Modal
+- [x] Implemented `PhotoCropModal` (`src/components/PhotoCropModal.tsx`) with strict framing parity:
+  - Dynamically measures slot aspect ratio so the modal crop viewport exactly matches the slot's aspect ratio.
+  - Initializes with identical zoom, rotation, and offsets so the cropped extent when opening the modal is 100% identical to the collage slot.
+  - Interactive mouse/touch dragging to smoothly pan the photo within the crop boundaries.
+  - Precision zoom slider (1.0x to 2.5x), 90° rotation, and framing reset.
+  - Rule-of-thirds composition overlay grid.
+- [x] Added click-to-edit support directly on collage photo slots (with drag-vs-click distance threshold detection) and added a dedicated crop button in the hover toolbar.
+- [x] Updated canvas exporter (`src/utils/canvasExporter.ts`) to synchronize percentage-based offsets with CSS transforms for pixel-perfect Ultra HD exports.
+- [x] Added modular i18n dictionaries: `languages/EN/src-components-crop-modal.json` and `languages/KO/src-components-crop-modal.json`.
+- [x] Resolved `tsconfig.json` lint warning by removing deprecated `"baseUrl": "."` when using `"moduleResolution": "bundler"`, maintaining clean `"paths"` mapping.
+
+### Sprint 8: Precision `object-position` Framing & Bottom Truncation Fix
+- [x] Diagnosed and fixed image bottom truncation bug:
+  - Previously, using `translate(...)` on a `w-full h-full` image element moved the element box itself, leaving an empty gray container gap at the bottom/top instead of revealing hidden photo content.
+  - Replaced translation with native CSS `object-fit: cover` and `object-position: ${50 + offsetX}% ${50 + offsetY}%`.
+  - Guarantees 100% full-frame coverage at all times: moving `offsetY` towards +50 smoothly and completely reveals the bottom of tall photos, and towards -50 reveals the top, without ever exposing gray background.
+  - Added precision "Vertical Position" (위/아래) and "Horizontal Position" (좌/우) interactive sliders in `PhotoCropModal` alongside 1:1 mouse/touch dragging.
+  - Aligned HTML5 Canvas export math in `canvasExporter.ts` to exactly mirror `object-position` calculations for identical exports.
 
 ---
 

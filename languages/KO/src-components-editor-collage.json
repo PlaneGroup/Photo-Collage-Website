@@ -21,6 +21,7 @@
   "stampFont": "폰트 스타일",
   "stampColor": "글자 색상",
   "photoActions": "사진 편집 도구",
+  "adjustPosition": "구도 및 위치 조정",
   "swapInstruction": "사진을 드래그하여 위치를 교환할 수 있습니다",
   "rotatePhoto": "90° 회전",
   "filterPhoto": "필터 적용",

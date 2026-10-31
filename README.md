@@ -80,9 +80,10 @@ Your Device (Web Browser)
 * **Studio Backgrounds**: Curated palettes including Obsidian Black, Warm Cream, Pastel Blossom, Fresh Mint, and vibrant modern gradients (Sunset Boulevard, Neon Velvet, Deep Ocean, Peach Sherbet).
 * **Aesthetic Watermark & Date Stamp**: Add customizable date or commemorative titles with Modern, Serif, Typewriter, or Handwriting typography.
 * **Per-Photo Tools**:
+  * **Interactive Position & Framing Modal**: Click any photo or click the crop tool icon to adjust position, pan within the frame, zoom, and rotate with 100% aspect ratio parity.
   * Drag & drop to swap positions.
   * Instant 90° rotation.
-  * One-click zoom toggle (1x to 1.6x).
+  * One-click zoom toggle (1x to 1.6x) and fine-tuned slider (1x to 2.5x).
   * Color filter presets: Original, Black & White, Film Noir, Warm Sunset, Cool Breeze, Vintage Film, Vivid Pop, Moody Fade, Retro Polaroid.
 
 ---

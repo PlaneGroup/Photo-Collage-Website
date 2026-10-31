@@ -21,6 +21,7 @@
   "stampFont": "Stamp Style",
   "stampColor": "Text Color",
   "photoActions": "Photo Tools",
+  "adjustPosition": "Adjust Framing",
   "swapInstruction": "Drag photos to swap positions",
   "rotatePhoto": "Rotate 90°",
   "filterPhoto": "Apply Filter",

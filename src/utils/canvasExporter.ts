@@ -161,11 +161,23 @@ export async function renderCollageToCanvas({
     const drawW = imgW * scaleFactor;
     const drawH = imgH * scaleFactor;
 
-    // Draw image centered in slot
+    // Available overflow for positioning
+    const overflowX = Math.max(0, drawW - effectiveSlotW);
+    const overflowY = Math.max(0, drawH - effectiveSlotH);
+
+    // Normalized position factors matching CSS object-position (0 = top/left, 0.5 = center, 1 = bottom/right)
+    const posX = Math.max(0, Math.min(1, (50 + (photo.offsetX || 0)) / 100));
+    const posY = Math.max(0, Math.min(1, (50 + (photo.offsetY || 0)) / 100));
+
+    // Coordinates relative to slot center
+    const drawX = -effectiveSlotW / 2 - overflowX * posX;
+    const drawY = -effectiveSlotH / 2 - overflowY * posY;
+
+    // Draw image with exact framing matching CSS
     ctx.drawImage(
       img,
-      -drawW / 2 + (photo.offsetX || 0) * scale,
-      -drawH / 2 + (photo.offsetY || 0) * scale,
+      drawX,
+      drawY,
       drawW,
       drawH
     );

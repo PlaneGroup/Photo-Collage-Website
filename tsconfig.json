@@ -17,7 +17,6 @@
     "noFallthroughCasesInSwitch": true,
     "allowJs": true,
     "types": ["vite/client", "node"],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

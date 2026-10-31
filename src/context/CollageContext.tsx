@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect, useRef } from 'react';
 import { PhotoItem, CanvasSettings, LayoutId, LayoutSlot } from '../types/collage';
 import { computeLayoutSlots } from '../utils/layoutEngine';
 
@@ -55,6 +55,10 @@ export const CollageProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [autoMessage, setAutoMessage] = useState<string | null>(null);
   const [autoNotification, setAutoNotification] = useState<CollageNotification | null>(null);
 
+  // Safety ref to prevent accidental duplicate additions from bubbled drag events
+  const lastAddedBatchRef = useRef<string>('');
+  const lastAddedTimeRef = useRef<number>(0);
+
   // Compute active slots reactively
   const activeSlots = computeLayoutSlots(
     layoutId,
@@ -73,6 +77,15 @@ export const CollageProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const addPhotos = useCallback(async (files: File[]) => {
     if (!files.length) return;
+
+    // Deduplication check: ignore duplicate calls fired within 600ms with identical files
+    const batchKey = files.map((f) => `${f.name}-${f.size}-${f.lastModified}`).join('|');
+    const now = Date.now();
+    if (batchKey === lastAddedBatchRef.current && now - lastAddedTimeRef.current < 600) {
+      return;
+    }
+    lastAddedBatchRef.current = batchKey;
+    lastAddedTimeRef.current = now;
 
     const newItems: PhotoItem[] = [];
 

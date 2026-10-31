@@ -21,6 +21,7 @@ export const Dropzone: React.FC = () => {
 
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       await addPhotos(Array.from(e.dataTransfer.files));

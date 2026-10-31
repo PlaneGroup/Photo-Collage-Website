@@ -23,18 +23,42 @@ const MainLayout: React.FC = () => {
   const [isDraggingFiles, setIsDraggingFiles] = useState(false);
   const dragCounter = useRef(0);
 
-  // Prevent default browser behavior on window to avoid opening dragged image in new tab
+  // Global drag-and-drop safety listeners: ensure overlay resets on any drag end or cancel
   useEffect(() => {
-    const preventDragDefaults = (e: DragEvent) => {
+    const resetDragState = () => {
+      dragCounter.current = 0;
+      setIsDraggingFiles(false);
+    };
+
+    const handleWindowDragOver = (e: DragEvent) => {
       e.preventDefault();
     };
 
-    window.addEventListener('dragover', preventDragDefaults);
-    window.addEventListener('drop', preventDragDefaults);
+    const handleWindowDrop = (e: DragEvent) => {
+      e.preventDefault();
+      resetDragState();
+    };
+
+    const handleWindowDragEnd = () => {
+      resetDragState();
+    };
+
+    const handleWindowMouseLeave = (e: MouseEvent) => {
+      if (!e.relatedTarget && e.clientY <= 0) {
+        resetDragState();
+      }
+    };
+
+    window.addEventListener('dragover', handleWindowDragOver);
+    window.addEventListener('drop', handleWindowDrop);
+    window.addEventListener('dragend', handleWindowDragEnd);
+    document.addEventListener('mouseleave', handleWindowMouseLeave);
 
     return () => {
-      window.removeEventListener('dragover', preventDragDefaults);
-      window.removeEventListener('drop', preventDragDefaults);
+      window.removeEventListener('dragover', handleWindowDragOver);
+      window.removeEventListener('drop', handleWindowDrop);
+      window.removeEventListener('dragend', handleWindowDragEnd);
+      document.removeEventListener('mouseleave', handleWindowMouseLeave);
     };
   }, []);
 
@@ -90,8 +114,41 @@ const MainLayout: React.FC = () => {
       
       {/* Global Drag-to-Add Overlay when dragging photos over existing collage */}
       {isDraggingFiles && photos.length > 0 && (
-        <div className="fixed inset-0 z-50 pointer-events-none bg-studio-950/80 backdrop-blur-md flex flex-col items-center justify-center animate-fade-in p-6">
-          <div className="relative p-8 sm:p-12 rounded-3xl border-3 border-dashed border-indigo-400 bg-indigo-500/10 flex flex-col items-center text-center shadow-glow max-w-lg mx-auto">
+        <div 
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+          }}
+          onDragLeave={(e) => {
+            e.preventDefault();
+            if (e.currentTarget === e.target) {
+              dragCounter.current = 0;
+              setIsDraggingFiles(false);
+            }
+          }}
+          onDrop={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounter.current = 0;
+            setIsDraggingFiles(false);
+
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+              const files = Array.from(e.dataTransfer.files).filter((f) => f.type.startsWith('image/'));
+              if (files.length > 0) {
+                await addPhotos(files);
+              }
+            }
+          }}
+          onClick={() => {
+            dragCounter.current = 0;
+            setIsDraggingFiles(false);
+          }}
+          className="fixed inset-0 z-50 pointer-events-auto bg-studio-950/80 backdrop-blur-md flex flex-col items-center justify-center animate-fade-in p-6 cursor-pointer"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            className="relative p-8 sm:p-12 rounded-3xl border-3 border-dashed border-indigo-400 bg-indigo-500/10 flex flex-col items-center text-center shadow-glow max-w-lg mx-auto"
+          >
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-xl shadow-indigo-500/40 animate-bounce mb-5">
               <UploadCloud className="w-10 h-10" />
             </div>

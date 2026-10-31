@@ -34,6 +34,7 @@ function buildTranslationDictionary(): Record<SupportedLanguage, Record<string, 
     else if (fileName.includes('presets') || fileName.includes('templates')) namespace = 'presets';
     else if (fileName.includes('export')) namespace = 'export';
     else if (fileName.includes('common')) namespace = 'common';
+    else if (fileName.includes('crop')) namespace = 'crop';
 
     // Store under namespace
     dict[locale][namespace] = {

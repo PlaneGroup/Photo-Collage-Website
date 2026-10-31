@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useCollage } from '../context/CollageContext';
 import { useLanguage } from '../context/LanguageContext';
+import { PhotoItem } from '../types/collage';
 import { ASPECT_RATIOS } from '../utils/layoutEngine';
 import { FILTER_PRESETS } from '../../assets/js/collage-filters';
+import { PhotoCropModal } from './PhotoCropModal';
 import { 
   RotateCw, 
   Trash2, 
   SlidersHorizontal, 
   Sparkles,
-  Move
+  Move,
+  Crop
 } from 'lucide-react';
 
 export const CollageCanvas: React.FC = () => {
@@ -22,13 +25,17 @@ export const CollageCanvas: React.FC = () => {
     rotatePhoto, 
     setPhotoFilter, 
     updatePhoto,
-    removePhoto,
-    addPhotos 
+    removePhoto
   } = useCollage();
   const { t } = useLanguage();
 
   const [draggedPhotoId, setDraggedPhotoId] = useState<string | null>(null);
   const [activeFilterMenuId, setActiveFilterMenuId] = useState<string | null>(null);
+
+  // Crop / Reposition Modal state
+  const [cropModalPhoto, setCropModalPhoto] = useState<PhotoItem | null>(null);
+  const [cropModalSlotRatio, setCropModalSlotRatio] = useState<number>(1);
+  const pointerDownPosRef = useRef({ x: 0, y: 0 });
 
   const aspectRatioInfo = ASPECT_RATIOS[settings.aspectRatio] || ASPECT_RATIOS['1:1'];
 
@@ -42,42 +49,46 @@ export const CollageCanvas: React.FC = () => {
     setDraggedPhotoId(id);
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleSlotDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    if (e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
-      e.dataTransfer.dropEffect = 'copy';
-    }
   };
 
-  const handleDrop = async (e: React.DragEvent, targetId?: string) => {
+  const handleSlotDrop = (e: React.DragEvent, targetId: string) => {
+    // If external files are dropped from OS, let App-level drop handler handle it exclusively!
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      return;
+    }
+
     e.preventDefault();
     e.stopPropagation();
 
-    // Check if external image files were dropped
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files).filter((f) => f.type.startsWith('image/'));
-      if (files.length > 0) {
-        await addPhotos(files);
-        return;
-      }
-    }
-
-    // Otherwise handle internal photo slot swap
-    if (targetId) {
-      const sourceId = e.dataTransfer.getData('text/plain') || draggedPhotoId;
-      if (sourceId && sourceId !== targetId) {
-        swapPhotos(sourceId, targetId);
-      }
+    const sourceId = e.dataTransfer.getData('text/plain') || draggedPhotoId;
+    if (sourceId && sourceId !== targetId) {
+      swapPhotos(sourceId, targetId);
     }
     setDraggedPhotoId(null);
   };
 
+  const openCropModalForPhoto = (photo: PhotoItem, slotElement?: HTMLElement | null, fallbackRatio: number = 1) => {
+    let ratio = fallbackRatio;
+    if (slotElement) {
+      const rect = slotElement.getBoundingClientRect();
+      if (rect.height > 0) {
+        ratio = rect.width / rect.height;
+      }
+    }
+    setCropModalPhoto(photo);
+    setCropModalSlotRatio(ratio);
+  };
+
+  const handleApplyCrop = (updated: { offsetX: number; offsetY: number; zoom: number; rotation: number }) => {
+    if (cropModalPhoto) {
+      updatePhoto(cropModalPhoto.id, updated);
+    }
+  };
+
   return (
-    <div 
-      onDragOver={handleDragOver}
-      onDrop={(e) => handleDrop(e)}
-      className="relative w-full flex flex-col items-center justify-center p-4 sm:p-8"
-    >
+    <div className="relative w-full flex flex-col items-center justify-center p-4 sm:p-8">
       
       {/* Auto-Collage Notification Banner */}
       {(autoNotification || autoMessage) && (
@@ -93,8 +104,6 @@ export const CollageCanvas: React.FC = () => {
 
       {/* Main Canvas Frame */}
       <div 
-        onDragOver={handleDragOver}
-        onDrop={(e) => handleDrop(e)}
         className="relative w-full max-w-2xl mx-auto rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 border border-black/10 dark:border-white/10"
         style={{
           aspectRatio: `${aspectRatioInfo.ratio}`,
@@ -119,9 +128,19 @@ export const CollageCanvas: React.FC = () => {
                 key={photo.id}
                 draggable
                 onDragStart={(e) => handleDragStart(e, photo.id)}
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, photo.id)}
-                className={`group absolute overflow-hidden select-none transition-shadow ${
+                onDragOver={handleSlotDragOver}
+                onDrop={(e) => handleSlotDrop(e, photo.id)}
+                onPointerDown={(e) => {
+                  pointerDownPosRef.current = { x: e.clientX, y: e.clientY };
+                }}
+                onClick={(e) => {
+                  const dist = Math.hypot(e.clientX - pointerDownPosRef.current.x, e.clientY - pointerDownPosRef.current.y);
+                  if (dist < 6) {
+                    const fallbackRatio = (slot.width / slot.height) * aspectRatioInfo.ratio;
+                    openCropModalForPhoto(photo, e.currentTarget, fallbackRatio);
+                  }
+                }}
+                className={`group absolute overflow-hidden select-none transition-shadow cursor-pointer ${
                   draggedPhotoId === photo.id ? 'opacity-40 ring-2 ring-indigo-500 ring-offset-2' : ''
                 }`}
                 style={{
@@ -137,9 +156,14 @@ export const CollageCanvas: React.FC = () => {
                   <img
                     src={photo.url}
                     alt={`Collage Item ${index + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-200 pointer-events-none"
+                    className="w-full h-full pointer-events-none select-none transition-transform duration-100"
                     style={{
-                      transform: `rotate(${photo.rotation}deg) scale(${photo.zoom}) translate(${photo.offsetX}px, ${photo.offsetY}px)`,
+                      objectFit: 'cover',
+                      objectPosition: `${50 + (photo.offsetX || 0)}% ${50 + (photo.offsetY || 0)}%`,
+                      transform: photo.rotation || photo.zoom > 1
+                        ? `rotate(${photo.rotation || 0}deg) scale(${photo.zoom || 1})`
+                        : undefined,
+                      transformOrigin: `${50 + (photo.offsetX || 0)}% ${50 + (photo.offsetY || 0)}%`,
                       filter: filterPreset?.cssFilter || 'none',
                     }}
                   />
@@ -152,6 +176,21 @@ export const CollageCanvas: React.FC = () => {
                   {/* Quick Action Floating Bar on Hover */}
                   <div className="absolute top-2 right-2 flex items-center space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                     
+                    {/* Reposition / Crop button */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const slotEl = e.currentTarget.closest('.group') as HTMLElement | null;
+                        const fallbackRatio = (slot.width / slot.height) * aspectRatioInfo.ratio;
+                        openCropModalForPhoto(photo, slotEl, fallbackRatio);
+                      }}
+                      title={t('editor.adjustPosition')}
+                      className="p-1.5 rounded-lg bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all hover:scale-105 active:scale-95"
+                    >
+                      <Crop className="w-3.5 h-3.5 text-indigo-400" />
+                    </button>
+
                     {/* Rotate button */}
                     <button
                       type="button"
@@ -265,8 +304,17 @@ export const CollageCanvas: React.FC = () => {
 
       {/* Helpful Hint beneath Canvas */}
       <p className="mt-3 text-xs text-studio-400 dark:text-studio-500 text-center">
-        💡 {t('editor.swapInstruction')}
+        💡 {t('editor.swapInstruction')} • {t('crop.dragHint')}
       </p>
+
+      {/* Photo Position & Crop Adjustment Modal */}
+      <PhotoCropModal
+        isOpen={!!cropModalPhoto}
+        photo={cropModalPhoto}
+        slotAspectRatio={cropModalSlotRatio}
+        onClose={() => setCropModalPhoto(null)}
+        onApply={handleApplyCrop}
+      />
 
     </div>
   );

@@ -1,0 +1,12 @@
+{
+  "modalTitle": "Adjust Photo Position & Framing",
+  "modalSubtitle": "Drag the photo or use sliders to reveal cropped top/bottom areas",
+  "zoomLabel": "Zoom Level",
+  "verticalPosition": "Vertical Position (Up / Down)",
+  "horizontalPosition": "Horizontal Position (Left / Right)",
+  "resetButton": "Reset Framing",
+  "rotateButton": "Rotate 90°",
+  "cancelButton": "Cancel",
+  "applyButton": "Apply Framing",
+  "dragHint": "Drag photo to reveal hidden top or bottom areas"
+}

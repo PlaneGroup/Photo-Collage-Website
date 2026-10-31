@@ -65,5 +65,11 @@ This document records all instructions and rules provided by the USER. It serves
   * Outer border padding, inner spacing, corner radius.
   * Background colors (Solids, Gradients, Aesthetic studio palettes).
   * Optional date/title stamps and stickers.
-  * Per-photo controls: drag-and-drop swap, pan/zoom, rotate, filter presets, swap/delete.
+  * **Per-Photo Tools**:
+  * Click any photo directly or use the hover action button to open the **Position & Framing Adjustment Modal**.
+  * **Strict Framing Parity**: When the adjustment modal opens, the crop preview frame aspect ratio and initial cropped extent must **EXACTLY MATCH** how the photo looks in the collage slot before clicking.
+  * Interactive mouse/touch dragging within the crop frame to reposition (pan) the photo.
+  * Smooth zoom slider (1x to 2.5x), 90° rotation, and center reset.
+  * Synchronized across live CSS collage preview and Ultra HD canvas exports.
+  * Drag-and-drop photo swap, filter presets, swap/delete.
 * High-res export (PNG, JPEG, WebP) with 1x/2x scale options and clipboard copy.
