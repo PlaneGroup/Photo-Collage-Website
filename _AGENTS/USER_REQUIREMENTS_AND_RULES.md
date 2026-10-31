@@ -50,7 +50,10 @@ This document records all instructions and rules provided by the USER. It serves
 * **Assets**: Required custom CSS and JS utilities must be organized in the `assets/` directory.
 
 ## 6. Core Product Capabilities
-* Auto-collage generation immediately upon uploading photos.
+* **Auto-collage generation immediately upon uploading photos**.
+* **Global Drag & Drop Anywhere (No Button Click Required)**:
+  * Users can drag and drop photo files anywhere onto the canvas, workspace, or viewport at any time.
+  * Dropping photos automatically appends them and adapts the collage layout without forcing the user to find and click the "Add Photos" button.
 * Multiple layout presets:
   * Classic Grids (2x2, 3x3, etc.)
   * Modern Editorial / Magazine (Featured + Thumbnails)

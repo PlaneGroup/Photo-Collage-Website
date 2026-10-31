@@ -44,6 +44,13 @@
 - [x] Write rich, promotional, and detailed `README.md` in English.
 - [x] Final verification of all user requirements.
 
+### Sprint 6: Global Seamless Drag-and-Drop Enhancement
+- [x] Implemented global window & canvas drag-and-drop listener for external image files.
+- [x] User can drop image files anywhere onto the canvas, workspace, or browser window without clicking "Add Photos".
+- [x] Created stylish floating drop overlay (`editor.dragToAddTitle`, `editor.dragToAddSubtitle`) with bilingual i18n support.
+- [x] Auto-layout seamlessly accommodates newly appended photos while preserving 100% in-memory client-side privacy.
+- [x] Handled drop on individual photo slots to differentiate internal swapping vs external file addition.
+
 ---
 
 ### Verification Summary

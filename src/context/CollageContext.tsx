@@ -2,6 +2,11 @@ import React, { createContext, useContext, useState, useCallback, ReactNode, use
 import { PhotoItem, CanvasSettings, LayoutId, LayoutSlot } from '../types/collage';
 import { computeLayoutSlots } from '../utils/layoutEngine';
 
+export interface CollageNotification {
+  key: string;
+  params?: Record<string, string | number>;
+}
+
 interface CollageContextType {
   photos: PhotoItem[];
   layoutId: LayoutId;
@@ -9,6 +14,7 @@ interface CollageContextType {
   activeSlots: LayoutSlot[];
   selectedPhotoId: string | null;
   autoMessage: string | null;
+  autoNotification: CollageNotification | null;
   setLayoutId: (id: LayoutId) => void;
   setSelectedPhotoId: (id: string | null) => void;
   updateSettings: (updates: Partial<CanvasSettings>) => void;
@@ -47,6 +53,7 @@ export const CollageProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [settings, setSettings] = useState<CanvasSettings>(DEFAULT_SETTINGS);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string | null>(null);
   const [autoMessage, setAutoMessage] = useState<string | null>(null);
+  const [autoNotification, setAutoNotification] = useState<CollageNotification | null>(null);
 
   // Compute active slots reactively
   const activeSlots = computeLayoutSlots(
@@ -102,16 +109,35 @@ export const CollageProvider: React.FC<{ children: ReactNode }> = ({ children })
 
       // Auto-tune aspect ratio or template for special photo counts
       if (prev.length === 0 && merged.length === 4) {
-        // If 4 photos, could be photobooth or 2x2
         setLayoutId('auto');
+      } else if (prev.length > 0) {
+        // If photos were added, adapt layout if current template doesn't fit all photos
+        setLayoutId((curr) => {
+          if (curr === 'auto') return 'auto';
+          const slots = computeLayoutSlots(curr, prev.length, settings.aspectRatio);
+          if (merged.length > slots.length) {
+            return 'auto';
+          }
+          return curr;
+        });
       }
 
-      setAutoMessage(`Auto-collage generated for ${merged.length} photos!`);
-      setTimeout(() => setAutoMessage(null), 3500);
+      if (prev.length === 0) {
+        setAutoNotification({ key: 'editor.autoCollageNotice', params: { count: merged.length } });
+        setAutoMessage(`Auto-collage generated for ${merged.length} photos!`);
+      } else {
+        setAutoNotification({ key: 'editor.photosAddedNotice', params: { count: newItems.length } });
+        setAutoMessage(`Added ${newItems.length} photos!`);
+      }
+
+      setTimeout(() => {
+        setAutoMessage(null);
+        setAutoNotification(null);
+      }, 3500);
 
       return merged;
     });
-  }, []);
+  }, [settings.aspectRatio]);
 
   const removePhoto = useCallback((id: string) => {
     setPhotos((prev) => {
@@ -200,6 +226,7 @@ export const CollageProvider: React.FC<{ children: ReactNode }> = ({ children })
         activeSlots,
         selectedPhotoId,
         autoMessage,
+        autoNotification,
         setLayoutId,
         setSelectedPhotoId,
         updateSettings,

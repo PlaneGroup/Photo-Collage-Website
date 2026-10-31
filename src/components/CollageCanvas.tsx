@@ -17,11 +17,13 @@ export const CollageCanvas: React.FC = () => {
     settings, 
     activeSlots, 
     autoMessage,
+    autoNotification,
     swapPhotos, 
     rotatePhoto, 
     setPhotoFilter, 
     updatePhoto,
-    removePhoto 
+    removePhoto,
+    addPhotos 
   } = useCollage();
   const { t } = useLanguage();
 
@@ -42,30 +44,57 @@ export const CollageCanvas: React.FC = () => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    if (e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
+      e.dataTransfer.dropEffect = 'copy';
+    }
   };
 
-  const handleDrop = (e: React.DragEvent, targetId: string) => {
+  const handleDrop = async (e: React.DragEvent, targetId?: string) => {
     e.preventDefault();
-    const sourceId = e.dataTransfer.getData('text/plain') || draggedPhotoId;
-    if (sourceId && sourceId !== targetId) {
-      swapPhotos(sourceId, targetId);
+    e.stopPropagation();
+
+    // Check if external image files were dropped
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const files = Array.from(e.dataTransfer.files).filter((f) => f.type.startsWith('image/'));
+      if (files.length > 0) {
+        await addPhotos(files);
+        return;
+      }
+    }
+
+    // Otherwise handle internal photo slot swap
+    if (targetId) {
+      const sourceId = e.dataTransfer.getData('text/plain') || draggedPhotoId;
+      if (sourceId && sourceId !== targetId) {
+        swapPhotos(sourceId, targetId);
+      }
     }
     setDraggedPhotoId(null);
   };
 
   return (
-    <div className="relative w-full flex flex-col items-center justify-center p-4 sm:p-8">
+    <div 
+      onDragOver={handleDragOver}
+      onDrop={(e) => handleDrop(e)}
+      className="relative w-full flex flex-col items-center justify-center p-4 sm:p-8"
+    >
       
       {/* Auto-Collage Notification Banner */}
-      {autoMessage && (
+      {(autoNotification || autoMessage) && (
         <div className="absolute top-2 z-30 inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-600 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-500/30 animate-bounce">
           <Sparkles className="w-4 h-4 text-amber-300" />
-          <span>{autoMessage}</span>
+          <span>
+            {autoNotification 
+              ? t(autoNotification.key, autoNotification.params)
+              : autoMessage}
+          </span>
         </div>
       )}
 
       {/* Main Canvas Frame */}
       <div 
+        onDragOver={handleDragOver}
+        onDrop={(e) => handleDrop(e)}
         className="relative w-full max-w-2xl mx-auto rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 border border-black/10 dark:border-white/10"
         style={{
           aspectRatio: `${aspectRatioInfo.ratio}`,

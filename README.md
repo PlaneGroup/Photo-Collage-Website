@@ -19,7 +19,7 @@ Most online collage makers force you to upload sensitive personal photos to unkn
 
 **CollageCraft Studio** was built differently:
 - 🔒 **100% Private & In-Memory**: Your photos **never** leave your browser. All compositing, scaling, and filters happen directly on your local device.
-- ⚡ **Instant Auto-Collage**: Simply drop your photos — CollageCraft automatically determines the optimal aesthetic arrangement instantly.
+- ⚡ **Instant Auto-Collage & Drag Anywhere**: Drop photos anytime, anywhere on the screen — no need to click buttons. CollageCraft automatically adds them and arranges the optimal layout instantly.
 - 🎨 **Trendy Aesthetic Layouts**: From classic grids to Korean **Life4Cuts (인생네컷)** photobooth strips, editorial magazine layouts, and polaroid aesthetics.
 - 🎛️ **Deep Creative Controls**: Drag-and-drop photo swap, live pan/zoom, 90° rotation, color filters (Noir, Warm Sunset, Vintage 90s, Vivid), corner radius, and custom typography stamps.
 - 💎 **Ultra HD Client-Side Export**: Download crystal-clear PNG, JPEG, or WebP files at 1x or 2x Retina resolution, or copy straight to your clipboard with one click.
